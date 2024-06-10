@@ -126,6 +126,8 @@ int main(int argc, char* argv[])
 	std::string ad_unit_file, out_density_file, output_file_base;
 	std::string snapshot_load_file, snapshot_save_file;
 
+	std::vector<double> param_values; // Declare a vector to store the integer array
+
 	int StopFit = 0;
 	///// Flags to ensure various parameters have been read; set to false as default.
 	int GotNR = 0;
@@ -175,6 +177,9 @@ int main(int argc, char* argv[])
 	args.add_custom_option("BM", parse_bmp_option, "Bitmap format to use [PNG,BMP]");
 	args.add_integer_option("c", P.MaxNumThreads, "Number of threads to use");
 	args.add_integer_option("C", P.PlaceCloseIndepThresh, "Sets the P.PlaceCloseIndepThresh parameter");
+	
+	// Register the new integer array option
+    args.add_number_array_option("param_values", param_values, "List of integers");
 
 	/* Wes: Need to allow /CLPxx up to 99. I'll do this naively for now and prevent the help text from
 			looking overly verybose. To satisfiy all behaviour, /CLP0: to /CLP9: should do the
@@ -271,6 +276,17 @@ int main(int argc, char* argv[])
 
 	P.NumRealisations = GotNR;
 	Params::ReadParams(param_file, pre_param_file, ad_unit_file, &P, AdUnits);
+
+
+	// Override parameters with values passed via CLI
+	if (param_values.size() >= 1) {
+		std::cerr << "Before: P.PlaceCloseHouseholdRelContact = " << P.PlaceCloseHouseholdRelContact << std::endl;
+		P.PlaceCloseHouseholdRelContact = param_values[0];
+		std::cerr << "After: P.PlaceCloseHouseholdRelContact = " << P.PlaceCloseHouseholdRelContact << std::endl;
+	}
+	// if (param_values.size() >= 2) P. = param_values[1];
+
+
 	if (P.DoAirports)
 	{
 		if (air_travel_file.empty()) ERR_CRITICAL("Parameter file indicated airports should be used but '/AP' file was not given");

@@ -2360,4 +2360,3 @@ void Params::ReadParams(std::string const& ParamFile, std::string const& PrePara
 	delete[] CountryNames;
 	delete[] AdunitListNames;
 }
-

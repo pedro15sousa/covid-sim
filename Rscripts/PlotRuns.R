@@ -13,6 +13,7 @@
 # first refactoring pass wunderalbert@github.com
 
 
+.libPaths("~/R/library")
 #### Parameters ####
 
 # Where will the run data be located? The files are in BaseFolder/subfolder_i
@@ -239,12 +240,13 @@ for (SubFolder in VariousSubFolders)
 				CumCases_10yBands[, "60.70"] <- AgeResults[, paste0(CaseOrDeath, "60.65")] + AgeResults[, paste0(CaseOrDeath, "65.70")]
 				CumCases_10yBands[, "70.80"] <- AgeResults[, paste0(CaseOrDeath, "70.75")] + AgeResults[, paste0(CaseOrDeath, "75.80")]
 				CumCases_10yBands[, "80.85"] <- AgeResults[, paste0(CaseOrDeath, "80.85")]
-
+				
 				NumAgeBands = 9
 				NumWeeks 	= ceiling(dim(AgeResults)[1]/7)
 
 				FirstAgeBand = TRUE
 				DaysToConsider = seq(1, dim(AgeResults)[1], by = 7)
+	
 				for (ageband in 1:NumAgeBands)
 				{
 					Vec = na.omit(diff(CumCases_10yBands[, ageband], lag = 7)[DaysToConsider])
@@ -254,8 +256,10 @@ for (SubFolder in VariousSubFolders)
 						FirstAgeBand = FALSE
 
 					}	else WeeklyInc = cbind(WeeklyInc, Vec)
+					# print(head(WeeklyInc, 10), prettyprint = TRUE)
 				}
 				colnames(WeeklyInc) = colnames(CumCases_10yBands)
+				# write.csv(WeeklyInc, file = paste0(Scenario, CaseOrDeath, "WeeklyInc.csv"))
 
 				### cut off low incidence weeks.
 				PlotWindow <- CalcPlotWindow(WeeklyInc, Threshold = 1)
@@ -265,6 +269,16 @@ for (SubFolder in VariousSubFolders)
 				Dates <- sub("2020-", "", Dates)
 				Dates <- sub("2021-", "", Dates)
 				rownames(WeeklyInc) <- as.character(sub("2020-", "", Dates))
+				# cat("\n")
+				# print(WeeklyInc, prettyprint = TRUE)
+
+				# Print the week with the highest number of deaths/cases
+				max_week_index <- which.max(rowSums(WeeklyInc))
+				max_week_total <- max(rowSums(WeeklyInc))
+				max_week_date <- Dates[max_week_index]
+
+				cat(paste0("Week with the highest number of ", CaseOrDeath_long, ": ", max_week_date, "\n"))
+				cat(paste0("Total ", tolower(CaseOrDeath_long), " in the highest week: ", max_week_total, "\n"))
 
 				LWD <- 4
 				png(file = file.path(ScenarioPlotDir,

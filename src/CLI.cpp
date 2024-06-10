@@ -5,6 +5,8 @@
 #include <map>
 #include <sstream>
 #include <string>
+#include <vector>
+#include <regex>
 
 #include "CLI.h"
 #include "Error.h"
@@ -82,6 +84,45 @@ void parse_double(std::string const& input, double& output)
 	}
 }
 
+// Function to parse a space-separated list of integers
+void parse_number_array(std::string const& input, std::vector<double>& output)
+{
+    std::istringstream iss(input);
+    std::string token;
+    std::regex number_regex("^-?\\d*\\.?\\d+$");  // Regular expression to match valid numbers
+
+    while (iss >> token)
+    {
+        if (std::regex_match(token, number_regex))
+        {
+            try
+            {
+                double number = std::stod(token);
+                output.push_back(number);
+            }
+            catch (std::invalid_argument& e)
+            {
+                std::cerr << "Invalid token: " << token << std::endl;
+            }
+            catch (std::out_of_range& e)
+            {
+                std::cerr << "Out of range token: " << token << std::endl;
+            }
+        }
+        else
+        {
+            std::cerr << "Ignored non-numeric token: " << token << std::endl;
+        }
+    }
+
+    std::cerr << "Parsed numbers: ";
+    for (double num : output)
+    {
+        std::cerr << num << " ";
+    }
+    std::cerr << std::endl;
+}
+
 void CmdLineArgs::add_custom_option(std::string const& option, ParserFn func, std::string const& doc)
 {
 	if (option_map_.find(option) != option_map_.cend())
@@ -105,6 +146,12 @@ void CmdLineArgs::add_integer_option(std::string const& option, int& output, std
 void CmdLineArgs::add_string_option(std::string const& option, StringParserFn func, std::string& output, std::string const& doc)
 {
 	add_custom_option(option, std::bind(func, std::placeholders::_1, std::ref(output)), doc);
+}
+
+// Add the new method for integer array
+void CmdLineArgs::add_number_array_option(std::string const& option, std::vector<double>& output, std::string const& doc)
+{
+    add_custom_option(option, std::bind(parse_number_array, std::placeholders::_1, std::ref(output)), doc);
 }
 
 void CmdLineArgs::parse(int argc, char* argv[], Param& params)

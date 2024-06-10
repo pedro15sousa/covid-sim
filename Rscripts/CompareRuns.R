@@ -13,7 +13,7 @@
 
 
 
-
+.libPaths("~/R/library")
 #### Parameters ####
 
 # May later refactor to take inputs from seperate file or command line

@@ -4,6 +4,7 @@
 #include <functional>
 #include <map>
 #include <string>
+#include <vector> 
 
 // only a forward-declartion, no need to pull in all of Param.h in this header
 struct Param;
@@ -36,6 +37,11 @@ void parse_integer(std::string const& input, int& output);
  * Parses and checks if the input string is an double.
  */
 void parse_double(std::string const& input, double& output);
+
+/**
+ * Parses a space-separated list of integers.
+ */
+void parse_number_array(std::string const& input, std::vector<double>& output);
 
 class CmdLineArgs {
 public:
@@ -78,6 +84,14 @@ public:
 	 * cohesion between an option name (i.e. 'P') with a C++ variable (i.e. 'ParamFile')
 	 */
 	void add_string_option(std::string const& option, StringParserFn func, std::string& output, std::string const& doc);
+
+	/**
+     * Use this function when adding a new integer array option to the CLI.
+     *
+     * This will bind the output variable to a custom function that parses
+     * a space-separated list of integers.
+     */
+    void add_number_array_option(std::string const& option, std::vector<double>& output, std::string const& doc);
 
 	/**
 	 * Call this function once all add_option() calls have been made to process
