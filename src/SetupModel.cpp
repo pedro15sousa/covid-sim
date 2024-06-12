@@ -2269,7 +2269,7 @@ void AssignPeopleToPlaces()
 									if (j >= P.Nplace[tp])
 									{
 										fprintf(stderr, "*%i %i: %i %i\n", k, tp, j, P.Nplace[tp]);
-										ERR_CRITICAL("Out of bounds place link\n");
+										ERR_CRITICAL("Out of bounds place link 1\n");
 									}
 									t = dist2_raw(Households[Hosts[k].hh].loc_x, Households[Hosts[k].hh].loc_y, Places[tp][j].loc_x, Places[tp][j].loc_y);
 									s = ((double)ct->S) / ((double)ct->S0) * numKernel(t) / Cells[i].max_trans[l];
@@ -2496,7 +2496,7 @@ void LoadPeopleToPlaces(char* NetworkFile)
 				if (Hosts[i2].PlaceLinks[m] >= P.Nplace[m])
 				{
 					fprintf(stderr, "*%i %i: %i %i\n", i2, m, Hosts[i2].PlaceLinks[m], P.Nplace[m]);
-					ERR_CRITICAL("Out of bounds place link\n");
+					ERR_CRITICAL("Out of bounds place link 2\n");
 				}
 			}
 			i2++;
@@ -2537,7 +2537,7 @@ void SavePeopleToPlaces(char* NetworkFile)
 				if (Hosts[i].PlaceLinks[j] >= P.Nplace[j])
 				{
 					fprintf(stderr, "*%i %i: %i %i\n", i, j, Hosts[i].PlaceLinks[j], P.Nplace[j]);
-					ERR_CRITICAL("Out of bounds place link\n");
+					ERR_CRITICAL("Out of bounds place link 3\n");
 				}
 		}
 	}
