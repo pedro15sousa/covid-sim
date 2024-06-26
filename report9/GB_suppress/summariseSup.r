@@ -1,4 +1,4 @@
-cur_path="S:/GB_suppress/mean8_10/"
+cur_path="report9/GB_suppress/mean8_10/"
 f=TRUE
 stats.names=c("R0","Trig","Dur","Scenario","variable","Total incidence","Maximum incidence","Mean time","Max time","Median time")
 for(j in c("PropSocDist","Mild","ILI","SARI","Critical","incMild","incILI","incSARI","incCritical","incDeath"))
