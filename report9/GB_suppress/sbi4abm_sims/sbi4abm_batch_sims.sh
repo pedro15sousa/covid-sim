@@ -24,10 +24,11 @@ exe_path="$covidsim"
 pp_file="$gb_suppress_dir/preGB_R0=2.0.txt"
 p_file="$gb_suppress_dir/p_PC_CI_HQ_SD.txt"
 bin_file="$report9_dir/population/GB_pop2018.bin"
-network_bin="$report9_dir/population/NetworkGB_250T.bin"
+network_bin="$report9_dir/population/NetworkGB_54T.bin"
 output_file_name="PC_CI_HQ_SD_400_300_R0=2.6"
 nr_value=1
-c_value=250
+# c_value=250
+c_value=54
 clp1=400
 clp2=1000
 clp3=1000

@@ -154,7 +154,7 @@
 0.25
 
 [Household level compliance with quarantine]
-0.5
+#9
 
 [Individual level compliance with quarantine]
 1.0
@@ -198,7 +198,7 @@
 14
 
 [Proportion of population vaccinated]
-0.9
+#8
 
 [Vaccination radius]
 0
