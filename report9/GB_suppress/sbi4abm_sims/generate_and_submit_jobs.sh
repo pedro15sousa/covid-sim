@@ -45,7 +45,7 @@ population_ids="98798150 729101 17389101 4797132"
 # Ensure the main output directory exists
 # mkdir -p "$output_dir"
 
-create_location_binary() {
+create_population_binaries() {
     local R=2.6
     local rs=$(echo $R | awk '{print $1/2}')
     local cmd="'$exe_path' /c:'$c_value' /PP:'$pp_file' /P:$gb_suppress_dir/p_NoInt.txt /CLP1:'$clp1' /CLP2:'$clp2' /O:$output_dir/NoInt_R0=${R} /D:$report9_dir/population/GB_pop2018_nhs.txt /M:'$bin_file' /S:'$network_bin' /R:${rs} 98798150 729101 17389101 4797132"
@@ -55,7 +55,7 @@ create_location_binary() {
 }
 
 # Create location binary file
-create_location_binary
+create_population_binaries
 
 # Create a batch job file
 batch_job_file="$script_dir/batch_job.sh"
