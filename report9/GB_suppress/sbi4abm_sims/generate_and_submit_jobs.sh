@@ -2,7 +2,7 @@
 
 # Determine the directory paths based on the script location
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# covid_sim_dir="/home/sj514/projects/covid-sim"  # Adjusted to your HPC path
+# covid_sim_dir="/home/sj514/projects/covid-sim"  
 covid_sim_dir="$(cd "$script_dir/../../.." && pwd)"
 report9_dir="$covid_sim_dir/report9"
 gb_suppress_dir="$report9_dir/GB_suppress"
@@ -51,7 +51,7 @@ echo "#SBATCH --output=$output_dir/covid_sim_job_%A_%a.out" >> "$batch_job_file"
 echo "#SBATCH --error=$output_dir/covid_sim_job_%A_%a.err" >> "$batch_job_file"
 echo "#SBATCH --array=1-$(wc -l < "$parameters_file")" >> "$batch_job_file"
 echo "#SBATCH --ntasks=1" >> "$batch_job_file"
-echo "#SBATCH --cpus-per-task=8" >> "$batch_job_file"
+echo "#SBATCH --cpus-per-task=54" >> "$batch_job_file"
 echo "#SBATCH --mem=4G" >> "$batch_job_file"
 echo "#SBATCH --time=01:00:00" >> "$batch_job_file"
 echo "" >> "$batch_job_file"
