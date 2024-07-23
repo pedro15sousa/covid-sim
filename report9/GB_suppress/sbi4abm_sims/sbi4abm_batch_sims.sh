@@ -34,6 +34,7 @@ clp2=1000
 clp3=1000
 clp4=1000
 clp5=300
+R=2.6
 population_ids="98798150 729101 17389101 4797132"
 
 counter=0
@@ -49,14 +50,14 @@ echo "#SBATCH --output=$output_dir/covid_sim_job_%A_%a.out" >> "$batch_job_file"
 echo "#SBATCH --error=$output_dir/covid_sim_job_%A_%a.err" >> "$batch_job_file"
 echo "#SBATCH --array=1-$(wc -l < <(echo "$params"))" >> "$batch_job_file"
 echo "#SBATCH --ntasks=1" >> "$batch_job_file"
-echo "#SBATCH --cpus-per-task=8" >> "$batch_job_file"
+echo "#SBATCH --cpus-per-task=54" >> "$batch_job_file"
 echo "#SBATCH --mem=4G" >> "$batch_job_file"
 echo "#SBATCH --time=01:00:00" >> "$batch_job_file"
 echo "" >> "$batch_job_file"
 
 # Export necessary environment variables
-echo "export OMP_NUM_THREADS=8" >> "$batch_job_file"
-echo "export MKL_NUM_THREADS=8" >> "$batch_job_file"
+echo "export OMP_NUM_THREADS=54" >> "$batch_job_file"
+echo "export MKL_NUM_THREADS=54" >> "$batch_job_file"
 
 # Generate commands and append to the batch job file
 while IFS= read -r line; do
@@ -67,7 +68,7 @@ while IFS= read -r line; do
     line=$(echo "$line" | sed -e 's/tensor(\([^)]*\))/\1/g')
     
     IFS=' ' read -r relative_spatial_contact_rate_given_social_distancing prop_pop_vaccinated household_quarantine_compliance delay_to_start_case_isolation <<< "$line"
-    rs=$(echo "$relative_spatial_contact_rate_given_social_distancing" | awk '{print $1/2}')
+    rs=$(echo ${R} | awk '{print $1/2}')
     output_prefix="PC_CI_HQ_SD_${relative_spatial_contact_rate_given_social_distancing}_${prop_pop_vaccinated}_${household_quarantine_compliance}_${delay_to_start_case_isolation}"
     output_path="${output_dir}/${output_prefix}/${output_file_name}"
 

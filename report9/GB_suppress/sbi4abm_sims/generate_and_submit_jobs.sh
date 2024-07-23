@@ -2,7 +2,7 @@
 
 # Determine the directory paths based on the script location
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# covid_sim_dir="/home/sj514/projects/covid-sim"  
+# covid_sim_dir="/home/sj514/projects/covid-sim" 
 covid_sim_dir="$(cd "$script_dir/../../.." && pwd)"
 report9_dir="$covid_sim_dir/report9"
 gb_suppress_dir="$report9_dir/GB_suppress"
@@ -38,6 +38,8 @@ clp2=1000
 clp3=1000
 clp4=1000
 clp5=300
+R=2.6
+rs=$(echo ${R} | awk '{print $1/2}')
 population_ids="98798150 729101 17389101 4797132"
 
 # Ensure the main output directory exists
@@ -63,11 +65,10 @@ echo "export MKL_NUM_THREADS=54" >> "$batch_job_file"
 # Add the command to run the specific job
 echo 'param_line=$(sed -n "${SLURM_ARRAY_TASK_ID}p" '$parameters_file')' >> "$batch_job_file"
 echo 'IFS=" " read -r relative_spatial_contact_rate_given_social_distancing prop_pop_vaccinated household_quarantine_compliance delay_to_start_case_isolation <<< "$param_line"' >> "$batch_job_file"
-echo 'rs=$(echo "$relative_spatial_contact_rate_given_social_distancing" | awk "{print \$1/2}")' >> "$batch_job_file"
 echo 'output_prefix="PC_CI_HQ_SD_${relative_spatial_contact_rate_given_social_distancing}_${prop_pop_vaccinated}_${household_quarantine_compliance}_${delay_to_start_case_isolation}"' >> "$batch_job_file"
 echo 'output_path="'$output_dir'/${output_prefix}/'$output_file_name'"' >> "$batch_job_file"
 echo 'mkdir -p "'$output_dir'/${output_prefix}"' >> "$batch_job_file"
-echo 'cmd="'$exe_path' /NR:'$nr_value' /c:'$c_value' /PP:'$pp_file' /P:'$p_file' /CLP1:'$clp1' /CLP2:'$clp2' /CLP3:'$clp3' /CLP4:'$clp4' /CLP5:'$clp5' /CLP6:${relative_spatial_contact_rate_given_social_distancing} /CLP7:${delay_to_start_case_isolation} /CLP8:${prop_pop_vaccinated} /CLP9:${household_quarantine_compliance} /O:${output_path} /D:'$bin_file' /L:'$network_bin' /R:${rs} '$population_ids'"' >> "$batch_job_file"
+echo 'cmd="'$exe_path' /NR:'$nr_value' /c:'$c_value' /PP:'$pp_file' /P:'$p_file' /CLP1:'$clp1' /CLP2:'$clp2' /CLP3:'$clp3' /CLP4:'$clp4' /CLP5:'$clp5' /CLP6:${relative_spatial_contact_rate_given_social_distancing} /CLP7:${delay_to_start_case_isolation} /CLP8:${prop_pop_vaccinated} /CLP9:${household_quarantine_compliance} /O:${output_path} /D:'$bin_file' /L:'$network_bin' /R:'$rs' '$population_ids'"' >> "$batch_job_file"
 echo 'echo "$cmd"' >> "$batch_job_file"
 echo 'eval "$cmd"' >> "$batch_job_file"
 
