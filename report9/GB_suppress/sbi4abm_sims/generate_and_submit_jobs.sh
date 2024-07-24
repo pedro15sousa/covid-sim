@@ -55,7 +55,7 @@ create_population_binaries() {
 }
 
 # Create location binary file
-create_population_binaries
+# create_population_binaries
 
 # Create a batch job file
 batch_job_file="$script_dir/batch_job.sh"
