@@ -22,17 +22,17 @@ echo "$params"
 
 # Write parameters to a parameters.txt file
 parameters_file="$script_dir/parameters.txt"
-echo "$params" | sed -e 's/tensor(\([^)]*\))/\1/g' > "$parameters_file"
+echo -n "$params" | sed -e 's/tensor(\([^)]*\))/\1/g' > "$parameters_file"
 
 # Command template
 exe_path="$covidsim"
 pp_file="$gb_suppress_dir/preGB_R0=2.0.txt"
 p_file="$gb_suppress_dir/p_PC_CI_HQ_SD.txt"
 bin_file="$report9_dir/population/GB_pop2018.bin"
-network_bin="$report9_dir/population/NetworkGB_54T.bin"
+network_bin="$report9_dir/population/NetworkGB_25T.bin"
 output_file_name="PC_CI_HQ_SD_400_300_R0=2.6"
 nr_value=1
-c_value=54
+c_value=25
 clp1=400
 clp2=1000
 clp3=1000
@@ -65,7 +65,7 @@ echo "#SBATCH --output=$output_dir/covid_sim_job_%A_%a.out" >> "$batch_job_file"
 echo "#SBATCH --error=$output_dir/covid_sim_job_%A_%a.err" >> "$batch_job_file"
 echo "#SBATCH --array=1-$(wc -l < "$parameters_file")" >> "$batch_job_file"
 echo "#SBATCH --ntasks=1" >> "$batch_job_file"
-echo "#SBATCH --cpus-per-task=54" >> "$batch_job_file"
+echo "#SBATCH --cpus-per-task=25" >> "$batch_job_file"
 echo "#SBATCH --mem=4G" >> "$batch_job_file"
 echo "#SBATCH --time=01:00:00" >> "$batch_job_file"
 echo "#SBATCH -p cclake" >> "$batch_job_file"
@@ -73,8 +73,8 @@ echo "#SBATCH -A MADHAVAPEDDY-SL3-CPU" >> "$batch_job_file"
 echo "" >> "$batch_job_file"
 
 # Export necessary environment variables
-echo "export OMP_NUM_THREADS=54" >> "$batch_job_file"
-echo "export MKL_NUM_THREADS=54" >> "$batch_job_file"
+echo "export OMP_NUM_THREADS=25" >> "$batch_job_file"
+echo "export MKL_NUM_THREADS=25" >> "$batch_job_file"
 
 # Add the command to run the specific job
 echo 'param_line=$(sed -n "${SLURM_ARRAY_TASK_ID}p" '$parameters_file')' >> "$batch_job_file"
