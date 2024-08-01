@@ -11,7 +11,8 @@ src_dir="$covid_sim_dir/src"
 covidsim="$covid_sim_dir/build/src/CovidSim"
 
 # Path to the pickle file containing the parameters
-PICKLE_FILE="$script_dir/prior_thetas.pkl"
+PICKLE_FILE="$script_dir/prior_thetas_100k.pkl"
+echo "Pickle file: $PICKLE_FILE"
 
 # Extract parameters using the Python script
 params=$(python $script_dir/extract_params.py "$PICKLE_FILE")
